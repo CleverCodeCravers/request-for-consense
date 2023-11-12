@@ -1,5 +1,8 @@
 ﻿@page "/login"
 @using System.ComponentModel.DataAnnotations;
+@using RequestForConsense.BL.UserAuthentication;
+@using RequestForConsense.BL;
+@inject NavigationManager Navigation
 
 <div class="container">
     <h1>Request for Comment</h1>
@@ -8,8 +11,8 @@
         <ValidationSummary />
 
         <div class="form-group">
-            <label for="username">Username:</label>
-            <InputText id="username" class="form-control" @bind-Value="@loginModel.Username" />
+            <label for="email">Emailaddress:</label>
+            <InputText id="email" class="form-control" @bind-Value="@loginModel.Email" />
         </div>
 
         <div class="form-group">
@@ -19,21 +22,49 @@
 
         <button type="submit" class="btn btn-primary">Login</button>
     </EditForm>
+
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="alert alert-danger mt-3" role="alert">
+            @errorMessage
+        </div>
+    }
 </div>
 
 @code {
     private LoginModel loginModel = new LoginModel();
+    private string errorMessage;
 
     private void HandleValidSubmit()
     {
-        // Handle the login logic here
-        Console.WriteLine("Hello Naseif!");
+        var interactor = InteractorFactory.UserAuthentication();
+
+        var loginResult = interactor.Login(loginModel.Email, loginModel.Password);
+
+        if (!loginResult.IsSuccessWithValue(out var benutzer))
+        {
+            // Set the error message
+            errorMessage = loginResult.Error;
+            return;
+        }
+
+        // Store user in session
+        // Assuming Benutzer has an ID property, adjust accordingly
+        // You might want to use a more sophisticated session management approach
+        // depending on your application requirements
+        // SessionStorage<User>.SetItem("LoggedInUser", benutzer);
+
+        // Clear any previous error message if login is successful
+        errorMessage = null;
+
+        // Redirect to /counter
+        Navigation.NavigateTo("/counter");
     }
 
     public class LoginModel
     {
         [Required]
-        public string Username { get; set; }
+        public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

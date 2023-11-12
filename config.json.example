@@ -1,5 +1,6 @@
 {
-  "mysql_server": "",
-  "mysql_user": "",
-  "mysql_password": ""
+  "MySqlServer": "",
+  "MySqlUser": "",
+  "MySqlPassword": "",
+  "MySqlDatabase": ""
 }

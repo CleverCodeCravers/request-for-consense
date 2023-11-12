@@ -1,6 +1,10 @@
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using RequestForConsense.BL;
+using RequestForConsense.BL.ConfigurationManagement;
 using RequestForConsense.Blazor.Data;
+
+var configPath = ConfigurationFileFinder.FindConfigurationFile(AppContext.BaseDirectory);
+var configurationManager = new RequestForConsense.BL.ConfigurationManagement.ConfigurationManager(configPath);
+InteractorFactory.SetConnectionString(configurationManager.GetConnectionString());
 
 var builder = WebApplication.CreateBuilder(args);
 
