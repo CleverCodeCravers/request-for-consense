@@ -27,7 +27,7 @@ namespace RequestForConsense.Blazor.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync()
         {
-            ReturnUrl = Url.Content("~/");
+            ReturnUrl = Url.Content("~/Counter");
 
             if (ModelState.IsValid)
             {

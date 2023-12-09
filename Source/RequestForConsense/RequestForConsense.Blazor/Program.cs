@@ -21,6 +21,8 @@ builder.Services.AddIdentity<User, IdentityRole>()
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<IRoleStore<IdentityRole>, WeDoNotWantARoleStore>();
 builder.Services.AddScoped<IPasswordHasher<User>, BCryptPasswordHasher<User>>();
+builder.Services.AddScoped<IUserClaimsPrincipalFactory<User>, CustomUserClaimsPrincipalFactory>();
+
 builder.Services.AddScoped<IDatabaseAccessor>(
     provider =>
     new MySqlDatabaseAccessor(connectionString));
