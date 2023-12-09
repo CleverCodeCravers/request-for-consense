@@ -3,6 +3,7 @@ using System.Data;
 
 namespace RequestForConsense.BL.UserAuthentication
 {
+
     public class UserRepository : IUserRepository
     {
         private readonly IDatabaseAccessor _databaseAccessor;
@@ -16,13 +17,16 @@ namespace RequestForConsense.BL.UserAuthentication
         {
             // Implementation to retrieve user based on email
             // Assuming email is unique and using a dummy SQL query for demonstration
-            string sql = "SELECT email FROM users WHERE email = @Email AND isActive = 1";
+            string sql = "SELECT id, email, password FROM users WHERE email = @Email AND isActive = 1";
             DataTable result = _databaseAccessor.LoadDataTable(sql, new Dictionary<string, object> { { "@Email", email } });
 
             if (result.Rows.Count > 0)
             {
                 // Create a new user record with the email and return it
-                return new User(result.Rows[0]["email"].ToString());
+                return new User(
+                    result.Rows[0]["email"].ToString(),
+                    (int)result.Rows[0]["id"],
+                    result.Rows[0]["password"].ToString());
             }
 
             // If no active user found, return null
@@ -47,6 +51,21 @@ namespace RequestForConsense.BL.UserAuthentication
 
             // If no active user found, or password verification fails, return false
             return false;
+        }
+        public User FindById(int id)
+        {
+            string sql = "SELECT id, email, password FROM users WHERE id = @Id AND isActive = 1";
+            DataTable result = _databaseAccessor.LoadDataTable(sql, new Dictionary<string, object> { { "@Id", id } });
+
+            if (result.Rows.Count > 0)
+            {
+                return new User(
+                    result.Rows[0]["email"].ToString(),
+                    (int)result.Rows[0]["id"],
+                    result.Rows[0]["password"].ToString());
+            }
+
+            return null;
         }
     }
 }

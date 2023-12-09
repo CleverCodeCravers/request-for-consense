@@ -13,6 +13,8 @@ namespace RequestForConsense.BL.DatabaseAccess
             _connectionString = connectionString;
         }
 
+
+
         public int ExecuteSql(string sql, Dictionary<string, object> parameters)
         {
             using var connection = new MySqlConnection(_connectionString);

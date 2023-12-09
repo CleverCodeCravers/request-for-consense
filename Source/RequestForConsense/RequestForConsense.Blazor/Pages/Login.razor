@@ -1,6 +1,5 @@
 ﻿@page "/login"
 @using System.ComponentModel.DataAnnotations;
-@using RequestForConsense.BL.UserAuthentication;
 @using RequestForConsense.BL;
 @inject NavigationManager Navigation
 
@@ -33,7 +32,7 @@
 
 @code {
     private LoginModel loginModel = new LoginModel();
-    private string errorMessage;
+    private string errorMessage = string.Empty;
 
     private void HandleValidSubmit()
     {
@@ -47,15 +46,7 @@
             errorMessage = loginResult.Error;
             return;
         }
-
-        // Store user in session
-        // Assuming Benutzer has an ID property, adjust accordingly
-        // You might want to use a more sophisticated session management approach
-        // depending on your application requirements
-        // SessionStorage<User>.SetItem("LoggedInUser", benutzer);
-
-        // Clear any previous error message if login is successful
-        errorMessage = null;
+        errorMessage = string.Empty;
 
         // Redirect to /counter
         Navigation.NavigateTo("/counter");
